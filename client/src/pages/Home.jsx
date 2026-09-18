@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import api from "../services/api";
-import ProductCard from "../components/ProductCard";
+import ProductList from "../components/ProductList";
 
-function Home() {
+function Home({ onAddToCart }) {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -11,10 +11,11 @@ function Home() {
     const fetchProducts = async () => {
       try {
         const response = await api.get("/products");
+
         setProducts(response.data);
       } catch (error) {
         console.error(error);
-        setError("Failed to load products");
+        setError("Failed to load products.");
       } finally {
         setLoading(false);
       }
@@ -32,18 +33,21 @@ function Home() {
   }
 
   return (
-    <div>
-      <h1>Products</h1>
+    <main>
+      <section className="hero">
+        <h1>Welcome to My Store</h1>
+        <p>Find the products you need.</p>
+      </section>
 
-      <div className="products-grid">
-        {products.map((product) => (
-          <ProductCard
-            key={product._id}
-            product={product}
-          />
-        ))}
-      </div>
-    </div>
+      <section>
+        <h2>Products</h2>
+
+        <ProductList
+          products={products}
+          onAddToCart={onAddToCart}
+        />
+      </section>
+    </main>
   );
 }
 
