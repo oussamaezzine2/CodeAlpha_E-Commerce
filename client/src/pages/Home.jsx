@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import api from "../services/api";
 import ProductList from "../components/ProductList";
+import Loading from "../components/Loading";
+import ErrorMessage from "../components/ErrorMessage";
 
 function Home({ onAddToCart }) {
   const [products, setProducts] = useState([]);
@@ -25,11 +27,11 @@ function Home({ onAddToCart }) {
   }, []);
 
   if (loading) {
-    return <p>Loading products...</p>;
+    return <Loading message="Loading products..." />;
   }
 
   if (error) {
-    return <p>{error}</p>;
+    return <ErrorMessage message={error} />;
   }
 
   return (
@@ -42,10 +44,7 @@ function Home({ onAddToCart }) {
       <section>
         <h2>Products</h2>
 
-        <ProductList
-          products={products}
-          onAddToCart={onAddToCart}
-        />
+        <ProductList products={products} onAddToCart={onAddToCart} />
       </section>
     </main>
   );
