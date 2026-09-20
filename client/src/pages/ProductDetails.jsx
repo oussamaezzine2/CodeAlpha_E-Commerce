@@ -1,8 +1,5 @@
 import { useEffect, useState } from "react";
-import {
-  Link,
-  useParams
-} from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 
 import api from "../services/api";
 import { useCart } from "../context/CartContext";
@@ -12,22 +9,16 @@ function ProductDetails() {
 
   const { addToCart } = useCart();
 
-  const [product, setProduct] =
-    useState(null);
+  const [product, setProduct] = useState(null);
 
-  const [loading, setLoading] =
-    useState(true);
+  const [loading, setLoading] = useState(true);
 
-  const [error, setError] =
-    useState("");
+  const [error, setError] = useState("");
 
   useEffect(() => {
     const fetchProduct = async () => {
       try {
-        const response =
-          await api.get(
-            `/products/${id}`
-          );
+        const response = await api.get(`/products/${id}`);
 
         setProduct(response.data);
       } catch (error) {
@@ -51,37 +42,40 @@ function ProductDetails() {
 
   return (
     <main>
-      <Link to="/">
-        ← Back to products
-      </Link>
+      <Link to="/">← Back to products</Link>
 
-      <img
-        src={product.image}
-        alt={product.name}
-      />
+      <div className="product-details">
+        <img
+          src={product.image}
+          alt={product.name}
+          className="product-details-image"
+        />
 
-      <h1>{product.name}</h1>
+        <div className="product-details-info">
+          <p className="product-category">{product.category}</p>
 
-      <p>{product.description}</p>
+          <h1>{product.name}</h1>
 
-      <p>
-        Category: {product.category}
-      </p>
+          <p className="price">${product.price.toFixed(2)}</p>
 
-      <h2>${product.price}</h2>
+          <p className="description">{product.description}</p>
 
-      <p>
-        Stock: {product.stock}
-      </p>
+          <span className="product-stock">
+            {product.stock > 0
+              ? `${product.stock} items available`
+              : "Out of stock"}
+          </span>
 
-      <button
-        onClick={() =>
-          addToCart(product)
-        }
-        disabled={product.stock === 0}
-      >
-        Add to Cart
-      </button>
+          <br />
+
+          <button
+            onClick={() => addToCart(product)}
+            disabled={product.stock === 0}
+          >
+            {product.stock === 0 ? "Out of Stock" : "Add to Cart"}
+          </button>
+        </div>
+      </div>
     </main>
   );
 }

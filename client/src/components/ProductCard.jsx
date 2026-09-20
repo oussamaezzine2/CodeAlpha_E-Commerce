@@ -1,9 +1,9 @@
 import { Link } from "react-router-dom";
+import { useCart } from "../context/CartContext";
 
-function ProductCard({
-  product,
-  onAddToCart
-}) {
+function ProductCard({ product }) {
+  const { addToCart } = useCart();
+
   return (
     <article className="product-card">
       <img
@@ -12,33 +12,37 @@ function ProductCard({
       />
 
       <div className="product-card-content">
-        <h2>{product.name}</h2>
-
         <p className="product-category">
           {product.category}
         </p>
 
+        <h2>{product.name}</h2>
+
         <p className="product-price">
-          ${product.price}
+          ${product.price.toFixed(2)}
         </p>
 
         <p>
-          Stock: {product.stock}
+          {product.stock > 0
+            ? `${product.stock} in stock`
+            : "Out of stock"}
         </p>
 
         <div className="product-actions">
           <Link
             to={`/products/${product._id}`}
           >
-            View Details
+            Details
           </Link>
 
           <button
-            onClick={() => onAddToCart(product)}
+            onClick={() =>
+              addToCart(product)
+            }
             disabled={product.stock === 0}
           >
             {product.stock === 0
-              ? "Out of Stock"
+              ? "Unavailable"
               : "Add to Cart"}
           </button>
         </div>

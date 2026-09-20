@@ -4,10 +4,7 @@ import { useCart } from "../context/CartContext";
 import CartItem from "../components/CartItem";
 
 function Cart() {
-  const {
-    cart,
-    totalPrice
-  } = useCart();
+  const { cart, totalPrice } = useCart();
 
   if (cart.length === 0) {
     return (
@@ -16,9 +13,7 @@ function Cart() {
 
         <p>Your cart is empty.</p>
 
-        <Link to="/">
-          Continue Shopping
-        </Link>
+        <Link to="/">Continue Shopping</Link>
       </main>
     );
   }
@@ -29,23 +24,18 @@ function Cart() {
 
       <div className="cart-items">
         {cart.map((item) => (
-          <CartItem
-            key={item._id}
-            item={item}
-          />
+          <CartItem key={item._id} item={item} />
         ))}
       </div>
 
       <div className="cart-summary">
-        <h2>
-          Total: ${totalPrice.toFixed(2)}
-        </h2>
+        <h2>Total: ${totalPrice.toFixed(2)}</h2>
 
-        <Link to="/">
+        <Link to="/" className="btn btn-secondary">
           Continue Shopping
         </Link>
 
-        <Link to="/checkout">
+        <Link to="/checkout" className="btn">
           Proceed to Checkout
         </Link>
       </div>
